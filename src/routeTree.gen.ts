@@ -15,6 +15,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppNurseRouteImport } from './routes/_app.nurse'
+import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
 import { Route as AppMonitoringRouteImport } from './routes/_app.monitoring'
 import { Route as AppDoctorRouteImport } from './routes/_app.doctor'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
@@ -50,6 +51,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppNurseRoute = AppNurseRouteImport.update({
   id: '/nurse',
   path: '/nurse',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMonitoringRoute = AppMonitoringRouteImport.update({
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/doctor': typeof AppDoctorRoute
   '/monitoring': typeof AppMonitoringRoute
+  '/notifications': typeof AppNotificationsRoute
   '/nurse': typeof AppNurseRoute
   '/patients/$patientId': typeof AppPatientsPatientIdRoute
 }
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/doctor': typeof AppDoctorRoute
   '/monitoring': typeof AppMonitoringRoute
+  '/notifications': typeof AppNotificationsRoute
   '/nurse': typeof AppNurseRoute
   '/patients/$patientId': typeof AppPatientsPatientIdRoute
 }
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/doctor': typeof AppDoctorRoute
   '/_app/monitoring': typeof AppMonitoringRoute
+  '/_app/notifications': typeof AppNotificationsRoute
   '/_app/nurse': typeof AppNurseRoute
   '/_app/patients/$patientId': typeof AppPatientsPatientIdRoute
 }
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/doctor'
     | '/monitoring'
+    | '/notifications'
     | '/nurse'
     | '/patients/$patientId'
   fileRoutesByTo: FileRoutesByTo
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/doctor'
     | '/monitoring'
+    | '/notifications'
     | '/nurse'
     | '/patients/$patientId'
   id:
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/doctor'
     | '/_app/monitoring'
+    | '/_app/notifications'
     | '/_app/nurse'
     | '/_app/patients/$patientId'
   fileRoutesById: FileRoutesById
@@ -228,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/nurse'
       fullPath: '/nurse'
       preLoaderRoute: typeof AppNurseRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/monitoring': {
@@ -289,6 +308,7 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppDoctorRoute: typeof AppDoctorRoute
   AppMonitoringRoute: typeof AppMonitoringRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
   AppNurseRoute: typeof AppNurseRoute
   AppPatientsPatientIdRoute: typeof AppPatientsPatientIdRoute
 }
@@ -300,6 +320,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppDoctorRoute: AppDoctorRoute,
   AppMonitoringRoute: AppMonitoringRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
   AppNurseRoute: AppNurseRoute,
   AppPatientsPatientIdRoute: AppPatientsPatientIdRoute,
 }
