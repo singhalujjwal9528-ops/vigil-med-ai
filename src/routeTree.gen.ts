@@ -18,6 +18,7 @@ import { Route as AppNurseRouteImport } from './routes/_app.nurse'
 import { Route as AppMonitoringRouteImport } from './routes/_app.monitoring'
 import { Route as AppDoctorRouteImport } from './routes/_app.doctor'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppAnalyticsRouteImport } from './routes/_app.analytics'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
 import { Route as AppAiCenterRouteImport } from './routes/_app.ai-center'
 import { Route as AppPatientsPatientIdRouteImport } from './routes/_app.patients.$patientId'
@@ -66,6 +67,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAlertsRoute = AppAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/ai-center': typeof AppAiCenterRoute
   '/alerts': typeof AppAlertsRoute
+  '/analytics': typeof AppAnalyticsRoute
   '/dashboard': typeof AppDashboardRoute
   '/doctor': typeof AppDoctorRoute
   '/monitoring': typeof AppMonitoringRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/ai-center': typeof AppAiCenterRoute
   '/alerts': typeof AppAlertsRoute
+  '/analytics': typeof AppAnalyticsRoute
   '/dashboard': typeof AppDashboardRoute
   '/doctor': typeof AppDoctorRoute
   '/monitoring': typeof AppMonitoringRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_app/ai-center': typeof AppAiCenterRoute
   '/_app/alerts': typeof AppAlertsRoute
+  '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/doctor': typeof AppDoctorRoute
   '/_app/monitoring': typeof AppMonitoringRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/ai-center'
     | '/alerts'
+    | '/analytics'
     | '/dashboard'
     | '/doctor'
     | '/monitoring'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/ai-center'
     | '/alerts'
+    | '/analytics'
     | '/dashboard'
     | '/doctor'
     | '/monitoring'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_app/ai-center'
     | '/_app/alerts'
+    | '/_app/analytics'
     | '/_app/dashboard'
     | '/_app/doctor'
     | '/_app/monitoring'
@@ -239,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/analytics': {
+      id: '/_app/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/alerts': {
       id: '/_app/alerts'
       path: '/alerts'
@@ -266,6 +285,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppAiCenterRoute: typeof AppAiCenterRoute
   AppAlertsRoute: typeof AppAlertsRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppDoctorRoute: typeof AppDoctorRoute
   AppMonitoringRoute: typeof AppMonitoringRoute
@@ -276,6 +296,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppAiCenterRoute: AppAiCenterRoute,
   AppAlertsRoute: AppAlertsRoute,
+  AppAnalyticsRoute: AppAnalyticsRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppDoctorRoute: AppDoctorRoute,
   AppMonitoringRoute: AppMonitoringRoute,
