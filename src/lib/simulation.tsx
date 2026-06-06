@@ -96,10 +96,11 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
     seedPatients.map((p) => ({ ...p, vitals: { ...p.vitals } })),
   );
   const [alerts, setAlerts] = useState<PatientAlert[]>([]);
-  const [history, setHistory] = useState<Record<string, VitalHistoryPoint[]>>(() => seedHistory());
+  const [history, setHistory] = useState<Record<string, VitalHistoryPoint[]>>({});
   const lastAlert = useRef<Record<string, number>>({});
 
   useEffect(() => {
+    setHistory(seedHistory());
     const interval = setInterval(() => {
       const now = Date.now();
       setPatients((prev) =>
