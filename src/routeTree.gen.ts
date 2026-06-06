@@ -16,6 +16,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppMonitoringRouteImport } from './routes/_app.monitoring'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppAiCenterRouteImport } from './routes/_app.ai-center'
 import { Route as AppPatientsPatientIdRouteImport } from './routes/_app.patients.$patientId'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -52,6 +53,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAiCenterRoute = AppAiCenterRouteImport.update({
+  id: '/ai-center',
+  path: '/ai-center',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPatientsPatientIdRoute = AppPatientsPatientIdRouteImport.update({
   id: '/patients/$patientId',
   path: '/patients/$patientId',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/ai-center': typeof AppAiCenterRoute
   '/dashboard': typeof AppDashboardRoute
   '/monitoring': typeof AppMonitoringRoute
   '/patients/$patientId': typeof AppPatientsPatientIdRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/ai-center': typeof AppAiCenterRoute
   '/dashboard': typeof AppDashboardRoute
   '/monitoring': typeof AppMonitoringRoute
   '/patients/$patientId': typeof AppPatientsPatientIdRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_app/ai-center': typeof AppAiCenterRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/monitoring': typeof AppMonitoringRoute
   '/_app/patients/$patientId': typeof AppPatientsPatientIdRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/ai-center'
     | '/dashboard'
     | '/monitoring'
     | '/patients/$patientId'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/ai-center'
     | '/dashboard'
     | '/monitoring'
     | '/patients/$patientId'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/_app/ai-center'
     | '/_app/dashboard'
     | '/_app/monitoring'
     | '/_app/patients/$patientId'
@@ -177,6 +189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/ai-center': {
+      id: '/_app/ai-center'
+      path: '/ai-center'
+      fullPath: '/ai-center'
+      preLoaderRoute: typeof AppAiCenterRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/patients/$patientId': {
       id: '/_app/patients/$patientId'
       path: '/patients/$patientId'
@@ -188,12 +207,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAiCenterRoute: typeof AppAiCenterRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppMonitoringRoute: typeof AppMonitoringRoute
   AppPatientsPatientIdRoute: typeof AppPatientsPatientIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAiCenterRoute: AppAiCenterRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppMonitoringRoute: AppMonitoringRoute,
   AppPatientsPatientIdRoute: AppPatientsPatientIdRoute,
