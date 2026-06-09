@@ -1,6 +1,9 @@
 
 const express = require("express");
 const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
+
 require("dotenv").config();
 
 const connectDB = require("./config/db");
@@ -13,9 +16,25 @@ const alertRoutes = require("./routes/alertRoutes");
 // Middleware
 const { protect } = require("./middleware/auth");
 
+// Socket
+const hospitalSocket = require("./sockets/hospitalSocket");
+const { initializeSocket } = require("./config/socket");
+
 connectDB();
 
 const app = express();
+const server = http.createServer(app);
+
+// Socket.IO Setup
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+initializeSocket(io);
+hospitalSocket(io);
 
 // Middleware
 app.use(cors());
@@ -53,6 +72,6 @@ app.get("/profile", protect, (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

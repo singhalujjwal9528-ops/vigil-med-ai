@@ -1,6 +1,7 @@
 const Patient = require("../models/Patient");
 const Alert = require("../models/Alert");
 const predictRiskLevel = require("../services/predictionEngine");
+const { getIO } = require("../config/socket");
 
 // Add Patient
 const addPatient = async (req, res) => {
@@ -11,19 +12,24 @@ const addPatient = async (req, res) => {
 
     const patient = await Patient.create(req.body);
 
-    console.log("Patient Risk Level:", patient.riskLevel);
+    // Auto Alert Generation + Socket Event
+    if (patient.riskLevel === "Critical") {
+      const alert = await Alert.create({
+        patient: patient._id,
+        message: `Critical condition detected for ${patient.name}`,
+        severity: "Critical",
+      });
 
-    if (patient.riskLevel === "Critical" || patient.riskLevel === "High") {
-      try {
-        await Alert.create({
-          patient: patient._id,
-          message: `Critical condition detected for ${patient.name}`,
-          severity: patient.riskLevel,
-        });
-        console.log("Alert Created Successfully");
-      } catch (alertError) {
-        console.error("Alert Creation Failed:", alertError.message);
-      }
+      const io = getIO();
+
+      io.emit("newAlert", {
+        patientId: patient.patientId,
+        patientName: patient.name,
+        severity: alert.severity,
+        message: alert.message,
+      });
+
+      console.log("Real-time alert emitted");
     }
 
     res.status(201).json({
@@ -32,12 +38,6 @@ const addPatient = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    if (error.code === 11000) {
-      return res.status(400).json({
-        message: "Patient ID already exists, use a unique patientId",
-      });
-    }
 
     res.status(500).json({
       message: "Server Error",
@@ -112,12 +112,6 @@ const updatePatient = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    if (error.code === 11000) {
-      return res.status(400).json({
-        message: "Patient ID already exists, use a unique patientId",
-      });
-    }
 
     res.status(500).json({
       message: "Server Error",
